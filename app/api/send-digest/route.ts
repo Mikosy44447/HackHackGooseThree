@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     });
 
     const { data, error } = await resend.emails.send({
-      from: "HarnoldAlert <onboarding@resend.dev>",
+      from: "PoliticAlert <onboarding@resend.dev>",
       to: profile.email,
       subject: "Harnold’s latest legislative digest 🪿",
       html,

@@ -6,6 +6,12 @@ export type GooseProfileRecord = {
   contexts: string[];
   age?: string;
   gender?: string;
+  income?: string;
+  education?: string;
+  race?: string[];
+  location?: string;
+  employment?: string;
+  family?: string;
   digest_enabled?: boolean;
   digest_frequency?: string;
   created_at?: string;

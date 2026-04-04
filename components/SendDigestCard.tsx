@@ -89,45 +89,36 @@ export default function SendDigestCard({
   }
 
   return (
-    <section className="hand-drawn-card bg-white p-6">
-      <div className="text-sm font-medium text-orange-700">
-        Harnold’s dispatch center
-      </div>
-      <h2 className="mt-2 text-2xl font-bold">Send your digest</h2>
-      <p className="mt-3 text-slate-600">
-        Send a real personalized email now, or trigger a 10-second demo send that
-        feels like a scheduled digest.
-      </p>
+    <section className="hand-drawn-card bg-white p-5">
+      <div className="text-xs font-medium text-orange-700">Send digest</div>
+      <h2 className="mt-0.5 text-base font-bold">Email your top bills</h2>
 
-      <div className="mt-5 flex flex-wrap gap-3">
+      <div className="mt-3 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={sendNow}
-          disabled={loading}
-          className="hand-drawn-button bg-teal-600 px-5 py-3 font-semibold text-white disabled:opacity-60"
+          disabled={loading || !canSend}
+          className="hand-drawn-button bg-teal-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
         >
-          {loading ? "Sending..." : "Send my digest now"}
+          {loading ? "Sending..." : "Send now"}
         </button>
-
         <button
           type="button"
           onClick={sendInTenSeconds}
-          disabled={loading}
-          className="hand-drawn-button bg-orange-300 px-5 py-3 font-semibold text-slate-900 disabled:opacity-60"
+          disabled={loading || !canSend}
+          className="hand-drawn-button bg-slate-100 px-4 py-2 text-sm text-slate-700 disabled:opacity-60"
         >
-          Demo weekly send in 10s
+          Preview in 10s
         </button>
       </div>
 
-      <p className="mt-4 text-sm text-slate-600">
-        Recipient: {profile.email || "No email entered yet"}
-      </p>
-
       {status ? (
-        <div className="mt-4 rounded-[12px_20px_12px_20px] border-2 border-slate-900/10 bg-[#fff8ef] p-4 text-slate-700 break-words whitespace-pre-wrap">
-          {status}
-        </div>
-      ) : null}
+        <p className="mt-3 text-xs text-slate-600 break-words">{status}</p>
+      ) : (
+        <p className="mt-2 text-xs text-slate-400">
+          {profile.email || "No email set"}
+        </p>
+      )}
     </section>
   );
 }

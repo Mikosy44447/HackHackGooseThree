@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     }
 
     const userPrompt = `
-You are helping write a personalized legislative explainer for a civic-tech app called HarnoldAlert.
+You are helping write a personalized legislative explainer for a civic-tech app called PoliticAlert.
 
 Generate:
 - whyItMatters

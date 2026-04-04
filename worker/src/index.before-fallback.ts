@@ -475,7 +475,7 @@ async function generateBillAnalysis(
   bill: IngestBillInput
 ): Promise<BillAnalysis> {
   const prompt = `
-You are generating reusable bill-level analysis for a civic-tech app called HarnoldAlert.
+You are generating reusable bill-level analysis for a civic-tech app called PoliticAlert.
 
 Return structured output with exactly these fields:
 - whyItMattersGeneral
@@ -523,7 +523,7 @@ async function generateBillAudiences(
   bill: IngestBillInput
 ): Promise<BillAudience[]> {
   const prompt = `
-You are generating reusable audience-specific bill explainers for a civic-tech app called HarnoldAlert.
+You are generating reusable audience-specific bill explainers for a civic-tech app called PoliticAlert.
 
 For this bill, identify 3 to 6 audiences who may be meaningfully affected.
 

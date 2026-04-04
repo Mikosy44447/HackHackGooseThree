@@ -8,6 +8,13 @@ CONGRESS_SYNC_CONGRESS = "119"
 CONGRESS_SYNC_BILL_TYPE = "hr"
 CONGRESS_SYNC_LIMIT = "10"
 ANTHROPIC_MODEL = "claude-haiku-4-5"
+FEDERAL_REGISTER_BASE_URL = "https://www.federalregister.gov/api/v1"
+COURT_LISTENER_BASE_URL = "https://www.courtlistener.com/api/rest/v4"
+RESEND_FROM_EMAIL = "onboarding@resend.dev"
+# Secrets — set these via: npx wrangler secret put <NAME>
+# RESEND_API_KEY         — required for digest email delivery
+# COURT_LISTENER_API_KEY — optional, enables court decision ingestion
+#                          free token at https://www.courtlistener.com/sign-in/
 
 [triggers]
 crons = ["0 */6 * * *"]

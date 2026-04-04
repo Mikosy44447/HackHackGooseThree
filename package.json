@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "worker:dev": "cp .env worker/.dev.vars && cd worker && npx wrangler dev"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",

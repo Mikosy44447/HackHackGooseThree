@@ -4,6 +4,12 @@ export type UserProfile = {
   contexts: string[];
   age?: string;
   gender?: string;
+  income?: string;
+  education?: string;
+  race?: string[];
+  location?: string;
+  employment?: string;
+  family?: string;
 };
 
 export function generateProfileSummary(profile: UserProfile): string {
@@ -17,12 +23,15 @@ export function generateProfileSummary(profile: UserProfile): string {
     parts.push(`with a focus on ${profile.contexts.join(", ").toLowerCase()}`);
   }
 
-  if (profile.age) {
-    parts.push(`for someone in the ${profile.age} age group`);
-  }
-
-  if (profile.gender) {
-    parts.push(`who identifies as ${profile.gender.toLowerCase()}`);
+  const demoParts: string[] = [];
+  if (profile.age) demoParts.push(profile.age);
+  if (profile.gender) demoParts.push(profile.gender.toLowerCase());
+  if (profile.income) demoParts.push(profile.income);
+  if (profile.education) demoParts.push(profile.education);
+  if (profile.location) demoParts.push(profile.location);
+  if (profile.employment) demoParts.push(profile.employment);
+  if (demoParts.length > 0) {
+    parts.push(`(${demoParts.join(", ")})`);
   }
 
   if (parts.length === 0) {

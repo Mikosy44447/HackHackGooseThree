@@ -4,7 +4,13 @@ type ProfileSummaryProps = {
   contexts: string[];
   age?: string;
   gender?: string;
-  summary: string;
+  income?: string;
+  education?: string;
+  race?: string[];
+  location?: string;
+  employment?: string;
+  family?: string;
+  summary?: string;
 };
 
 export default function ProfileSummary({
@@ -13,45 +19,97 @@ export default function ProfileSummary({
   contexts,
   age,
   gender,
-  summary,
+  income,
+  education,
+  race,
+  location,
+  employment,
+  family,
 }: ProfileSummaryProps) {
+  const demographics = [age, gender, income, education, location, employment, family]
+    .filter(Boolean) as string[];
+  const raceList = race ?? [];
+
+  const hasAnything =
+    interests.length > 0 ||
+    contexts.length > 0 ||
+    demographics.length > 0 ||
+    raceList.length > 0;
+
   return (
-    <section className="hand-drawn-card bg-white p-6">
-      <div className="text-sm font-medium text-orange-700">
-        Harnold’s notes
-      </div>
-      <h2 className="mt-2 text-2xl font-bold">Your profile</h2>
-
-      <div className="mt-4 space-y-2 text-slate-700">
+    <section className="hand-drawn-card bg-white p-5">
+      <div className="flex items-center justify-between">
+        <div className="text-xs font-medium text-orange-700">Your profile</div>
         {email ? (
-          <p>
-            <span className="font-semibold">Email:</span> {email}
-          </p>
+          <span className="text-xs text-slate-400 truncate max-w-[160px]">{email}</span>
         ) : null}
-
-        <p>
-          <span className="font-semibold">Interests:</span>{" "}
-          {interests.length > 0 ? interests.join(", ") : "None selected"}
-        </p>
-
-        <p>
-          <span className="font-semibold">Contexts:</span>{" "}
-          {contexts.length > 0 ? contexts.join(", ") : "None selected"}
-        </p>
-
-        <p>
-          <span className="font-semibold">Age group:</span> {age || "Not provided"}
-        </p>
-
-        <p>
-          <span className="font-semibold">Gender:</span> {gender || "Not provided"}
-        </p>
       </div>
 
-      <div className="mt-5 rounded-[12px_20px_12px_20px] border-2 border-slate-900/10 bg-[#fff8ef] p-4">
-        <p className="text-sm font-medium text-slate-500">AI summary</p>
-        <p className="mt-2 text-slate-700">{summary}</p>
-      </div>
+      {!hasAnything ? (
+        <p className="mt-3 text-sm text-slate-500">
+          Complete onboarding to personalize your feed.
+        </p>
+      ) : null}
+
+      {interests.length > 0 ? (
+        <div className="mt-4">
+          <div className="mb-1.5 text-xs font-medium text-slate-400 uppercase tracking-wide">
+            Interests
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {interests.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-teal-200 bg-teal-50 px-2.5 py-0.5 text-xs font-medium text-teal-800"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {contexts.length > 0 ? (
+        <div className="mt-3">
+          <div className="mb-1.5 text-xs font-medium text-slate-400 uppercase tracking-wide">
+            Context
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {contexts.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-orange-200 bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-800"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {raceList.length > 0 ? (
+        <div className="mt-3">
+          <div className="mb-1.5 text-xs font-medium text-slate-400 uppercase tracking-wide">
+            Background
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {raceList.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs font-medium text-slate-700"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {demographics.length > 0 ? (
+        <div className="mt-3 text-xs text-slate-400">
+          {demographics.join(" · ")}
+        </div>
+      ) : null}
     </section>
   );
 }

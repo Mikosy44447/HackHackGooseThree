@@ -69,6 +69,60 @@ export function deriveProfileAudiences(profile: UserProfile): Array<{
     });
   }
 
+  if (profile.income) {
+    items.push({
+      audienceLabel: profile.income,
+      normalizedAudienceKey: toKey(profile.income),
+      source: "income",
+      confidence: 0.7,
+    });
+  }
+
+  if (profile.education) {
+    items.push({
+      audienceLabel: profile.education,
+      normalizedAudienceKey: toKey(profile.education),
+      source: "education",
+      confidence: 0.6,
+    });
+  }
+
+  for (const r of profile.race ?? []) {
+    items.push({
+      audienceLabel: r,
+      normalizedAudienceKey: toKey(r),
+      source: "race",
+      confidence: 0.8,
+    });
+  }
+
+  if (profile.location) {
+    items.push({
+      audienceLabel: profile.location,
+      normalizedAudienceKey: toKey(profile.location),
+      source: "location",
+      confidence: 0.5,
+    });
+  }
+
+  if (profile.employment) {
+    items.push({
+      audienceLabel: profile.employment,
+      normalizedAudienceKey: toKey(profile.employment),
+      source: "employment",
+      confidence: 0.6,
+    });
+  }
+
+  if (profile.family) {
+    items.push({
+      audienceLabel: profile.family,
+      normalizedAudienceKey: toKey(profile.family),
+      source: "family",
+      confidence: 0.5,
+    });
+  }
+
   const normalizedContexts = (profile.contexts ?? []).map(normalizeText);
 
   if (normalizedContexts.some((v) => v.includes("student") || v.includes("college"))) {
@@ -135,6 +189,69 @@ export function deriveProfileAudiences(profile: UserProfile): Array<{
       source: "derived",
       confidence: 0.85,
     });
+  }
+
+  // Income-derived audiences
+  const income = normalizeText(profile.income ?? "");
+  if (income.includes("25k") || income.includes("under") || income.includes("low")) {
+    items.push({ audienceLabel: "Low-Income Households", normalizedAudienceKey: "low_income", source: "derived", confidence: 0.9 });
+  }
+  if (income.includes("50k") || income.includes("75k") || income.includes("middle")) {
+    items.push({ audienceLabel: "Middle-Income Households", normalizedAudienceKey: "middle_income", source: "derived", confidence: 0.85 });
+  }
+  if (income.includes("150k") || income.includes("over") || income.includes("high")) {
+    items.push({ audienceLabel: "High-Income Households", normalizedAudienceKey: "high_income", source: "derived", confidence: 0.8 });
+  }
+
+  // Education-derived audiences
+  const edu = normalizeText(profile.education ?? "");
+  if (edu.includes("bachelor") || edu.includes("college") || edu.includes("graduate") || edu.includes("some college")) {
+    items.push({ audienceLabel: "College-Educated Adults", normalizedAudienceKey: "college_educated", source: "derived", confidence: 0.8 });
+  }
+  if (edu.includes("graduate") || edu.includes("master") || edu.includes("phd") || edu.includes("professional")) {
+    items.push({ audienceLabel: "Graduate Degree Holders", normalizedAudienceKey: "graduate_degree", source: "derived", confidence: 0.85 });
+  }
+  if (edu.includes("high school") || edu.includes("ged")) {
+    items.push({ audienceLabel: "High School Graduates", normalizedAudienceKey: "high_school_grad", source: "derived", confidence: 0.8 });
+  }
+
+  // Employment-derived audiences
+  const emp = normalizeText(profile.employment ?? "");
+  if (emp.includes("student")) {
+    items.push({ audienceLabel: "Students", normalizedAudienceKey: "student", source: "derived", confidence: 0.95 });
+  }
+  if (emp.includes("retired")) {
+    items.push({ audienceLabel: "Retirees", normalizedAudienceKey: "retiree", source: "derived", confidence: 0.9 });
+  }
+  if (emp.includes("self-employed") || emp.includes("freelance")) {
+    items.push({ audienceLabel: "Self-Employed Workers", normalizedAudienceKey: "self_employed", source: "derived", confidence: 0.85 });
+  }
+  if (emp.includes("unemployed") || emp.includes("job")) {
+    items.push({ audienceLabel: "Job Seekers", normalizedAudienceKey: "job_seeker", source: "derived", confidence: 0.85 });
+  }
+
+  // Family-derived audiences
+  const fam = normalizeText(profile.family ?? "");
+  if (fam.includes("parent") || fam.includes("child")) {
+    items.push({ audienceLabel: "Parents", normalizedAudienceKey: "parent", source: "derived", confidence: 0.9 });
+  }
+  if (fam.includes("caregiver")) {
+    items.push({ audienceLabel: "Caregivers", normalizedAudienceKey: "caregiver", source: "derived", confidence: 0.9 });
+  }
+
+  // Race-derived audiences
+  const races = (profile.race ?? []).map(normalizeText);
+  if (races.some((v) => v.includes("black") || v.includes("african"))) {
+    items.push({ audienceLabel: "Black Americans", normalizedAudienceKey: "black_american", source: "derived", confidence: 0.95 });
+  }
+  if (races.some((v) => v.includes("hispanic") || v.includes("latino"))) {
+    items.push({ audienceLabel: "Hispanic and Latino Communities", normalizedAudienceKey: "hispanic_latino", source: "derived", confidence: 0.95 });
+  }
+  if (races.some((v) => v.includes("native") || v.includes("indigenous"))) {
+    items.push({ audienceLabel: "Native American Communities", normalizedAudienceKey: "native_american", source: "derived", confidence: 0.95 });
+  }
+  if (races.some((v) => v.includes("pacific") || v.includes("islander"))) {
+    items.push({ audienceLabel: "Pacific Islander Communities", normalizedAudienceKey: "pacific_islander", source: "derived", confidence: 0.95 });
   }
 
   return uniqueByLabel(items);

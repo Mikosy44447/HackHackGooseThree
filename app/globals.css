@@ -158,3 +158,122 @@ textarea:focus {
 ::selection {
   background: rgba(47, 163, 154, 0.22);
 }
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translateY(0px) rotate(var(--tw-rotate, 0deg)); }
+  50%       { transform: translateY(-6px) rotate(var(--tw-rotate, 0deg)); }
+}
+
+@keyframes honk-pop {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  65%  { transform: scale(1.2) rotate(6deg);  opacity: 1; }
+  100% { transform: scale(1)   rotate(0deg);  opacity: 1; }
+}
+
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 2px 2px 0 rgba(0,0,0,0.18); }
+  50%       { box-shadow: 2px 2px 0 rgba(0,0,0,0.18), 0 0 0 4px rgba(47,163,154,0.25); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50%       { transform: rotate(4deg); }
+}
+
+@keyframes sketch-dash {
+  from { stroke-dashoffset: 800; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation utility classes */
+.anim-bob {
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+.anim-float {
+  animation: float-card 4s ease-in-out infinite;
+}
+
+.anim-honk-pop {
+  animation: honk-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.anim-wiggle {
+  animation: wiggle 2.5s ease-in-out infinite;
+}
+
+.anim-fade-up {
+  animation: fade-up 0.5s ease both;
+}
+
+/* Pulse ring on the HONK badge */
+.badge-honk {
+  animation: badge-pulse 2.4s ease-in-out infinite;
+}
+
+/* Wavy divider path gets drawn in */
+.wavy-animated path {
+  stroke-dasharray: 800;
+  animation: sketch-dash 1.8s ease both;
+}
+
+/* ── Content-type card accents ──────────────────────────────────────── */
+/* Used on dashboard cards and bill detail header */
+
+.ct-bill {
+  border-left: 4px solid var(--primary);
+}
+
+.ct-regulation {
+  border-left: 4px solid #d97706; /* amber-600 */
+}
+
+.ct-executive-order {
+  border-left: 4px solid #dc2626; /* red-600 */
+}
+
+.ct-court-decision {
+  border-left: 4px solid #7c3aed; /* violet-600 */
+}
+
+/* Content-type label badges */
+.ct-label-regulation {
+  background: #fef3c7;
+  color: #92400e;
+}
+.ct-label-executive_order {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.ct-label-court_decision {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* ── HONK badge ──────────────────────────────────────────────────────── */
+.badge-honk {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: linear-gradient(135deg, #0d9488, #2fa39a);
+  color: white;
+  border: 2px solid #0f766e;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
+  letter-spacing: 0.01em;
+}

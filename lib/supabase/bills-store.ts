@@ -1,5 +1,12 @@
 import { supabase } from "./client";
 
+export type Sponsor = {
+  fullName: string;
+  party?: string;
+  state?: string;
+  district?: string | number;
+};
+
 export type SupabaseBill = {
   id: string;
   title: string;
@@ -11,6 +18,9 @@ export type SupabaseBill = {
   related_bill_ids: string[];
   official_source_label: string;
   official_source_url: string;
+  content_type?: string;
+  sponsors?: Sponsor[];
+  agency?: string;
 };
 
 export type Bill = {
@@ -24,6 +34,9 @@ export type Bill = {
   relatedBillIds: string[];
   officialSourceLabel: string;
   officialSourceUrl: string;
+  contentType: string;
+  sponsors: Sponsor[];
+  agency?: string;
 };
 
 function mapBill(row: SupabaseBill): Bill {
@@ -38,6 +51,9 @@ function mapBill(row: SupabaseBill): Bill {
     relatedBillIds: row.related_bill_ids ?? [],
     officialSourceLabel: row.official_source_label,
     officialSourceUrl: row.official_source_url,
+    contentType: row.content_type ?? "bill",
+    sponsors: row.sponsors ?? [],
+    agency: row.agency,
   };
 }
 

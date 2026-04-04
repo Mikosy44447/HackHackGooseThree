@@ -18,6 +18,9 @@ export type IngestBillInput = {
   relatedBillIds: string[];
   officialSourceLabel: string;
   officialSourceUrl: string;
+  contentType?: string;
+  sponsors?: Array<{ fullName: string; party?: string; state?: string; district?: string | number }>;
+  agency?: string;
 };
 
 type BillAnalysisToolOutput = {
@@ -72,6 +75,9 @@ async function upsertBill(input: IngestBillInput) {
         related_bill_ids: input.relatedBillIds,
         official_source_label: input.officialSourceLabel,
         official_source_url: input.officialSourceUrl,
+        content_type: input.contentType ?? "bill",
+        sponsors: input.sponsors ?? [],
+        agency: input.agency ?? null,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "id" }
@@ -85,7 +91,7 @@ async function upsertBill(input: IngestBillInput) {
 
 async function generateBillAnalysis(input: IngestBillInput) {
   const prompt = `
-You are generating reusable bill-level analysis for a civic-tech app called HarnoldAlert.
+You are generating reusable bill-level analysis for a civic-tech app called PoliticAlert.
 
 Return structured output with exactly these fields:
 - whyItMattersGeneral
@@ -162,7 +168,7 @@ ${JSON.stringify(input, null, 2)}
 
 async function generateBillAudiences(input: IngestBillInput) {
   const prompt = `
-You are generating reusable audience-specific bill explainers for a civic-tech app called HarnoldAlert.
+You are generating reusable audience-specific bill explainers for a civic-tech app called PoliticAlert.
 
 For this bill, identify 3 to 6 audiences who may be meaningfully affected.
 

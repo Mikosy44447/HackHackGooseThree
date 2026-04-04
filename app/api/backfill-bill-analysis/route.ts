@@ -46,7 +46,7 @@ export async function POST(request: Request) {
         }
 
         const prompt = `
-You are generating reusable bill-level analysis for a civic-tech app called HarnoldAlert.
+You are generating reusable bill-level analysis for a civic-tech app called PoliticAlert.
 
 Return structured output with exactly these fields:
 - whyItMattersGeneral

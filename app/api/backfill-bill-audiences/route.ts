@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         }
 
         const prompt = `
-You are generating reusable audience-specific bill explainers for a civic-tech app called HarnoldAlert.
+You are generating reusable audience-specific bill explainers for a civic-tech app called PoliticAlert.
 
 For this bill, identify 3 to 6 audiences who may be meaningfully affected.
 
@@ -146,7 +146,7 @@ ${JSON.stringify(bill, null, 2)}
             normalizedAudienceKey: String(item.normalizedAudienceKey ?? "").trim() || null,
           }))
           .filter(
-            (item) =>
+            (item: { audienceLabelRaw: string; audienceRationale: string; whyItMatters: string; confidence: number; normalizedAudienceKey: string | null }) =>
               item.audienceLabelRaw &&
               item.audienceRationale &&
               item.whyItMatters

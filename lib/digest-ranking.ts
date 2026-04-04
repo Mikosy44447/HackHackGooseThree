@@ -57,6 +57,13 @@ export async function buildRankedDigestBills(
     profileAudiences,
     interests: profile.interests ?? [],
     contexts: profile.contexts ?? [],
+    demographics: {
+      income: profile.income,
+      employment: profile.employment,
+      family: profile.family,
+      education: profile.education,
+      age: profile.age,
+    },
   });
 
   const topBills = rankedBills.slice(0, limit);
@@ -88,72 +95,45 @@ export function buildDigestHtml(input: {
   profile: UserProfile;
   digestBills: DigestBill[];
 }) {
-  const nameLine =
-    input.profile.contexts?.length || input.profile.interests?.length
-      ? `
-        <p style="margin: 0 0 12px 0; color: #334155; font-size: 16px;">
-          Harnold checked the pond and picked bills based on your profile:
-          <strong>${[
-            ...(input.profile.contexts ?? []),
-            ...(input.profile.interests ?? []),
-          ]
-            .slice(0, 5)
-            .join(", ")}</strong>.
-        </p>
-      `
-      : `
-        <p style="margin: 0 0 12px 0; color: #334155; font-size: 16px;">
-          Harnold checked the pond and picked a few bills worth watching.
-        </p>
-      `;
+  const profileLine =
+    (input.profile.interests?.length ?? 0) > 0
+      ? input.profile.interests!.slice(0, 4).join(" · ")
+      : "your saved profile";
 
   const billSections = input.digestBills
-    .map(({ bill, analysis, rankingReason, matchedAudienceLabels }) => {
-      const whyItMatters =
-        analysis?.whyItMattersGeneral ||
-        "Harnold thinks this one deserves attention, even if the full analysis cache is still warming up in the reeds.";
+    .map(({ bill, analysis, matchedAudienceLabels }) => {
+      // One sentence: prefer AI why-it-matters, fall back to truncated summary
+      const whyItMatters = analysis?.whyItMattersGeneral
+        ? analysis.whyItMattersGeneral.split(/[.!?]/)[0].trim() + "."
+        : bill.summary.slice(0, 120) + (bill.summary.length > 120 ? "…" : "");
 
-      const broaderPattern =
-        analysis?.broaderPattern || bill.pattern || "Pattern still loading.";
-
-      const audienceLine =
-        matchedAudienceLabels.length > 0
-          ? `<p style="margin: 8px 0 0 0; color: #0f766e; font-size: 14px;"><strong>Audience overlap:</strong> ${matchedAudienceLabels.join(
-              ", "
-            )}</p>`
-          : "";
+      const tagLine = matchedAudienceLabels.length > 0
+        ? `<p style="margin: 6px 0 0 0; font-size: 12px; color: #0f766e;">
+             ${matchedAudienceLabels.slice(0, 3).join(" · ")}
+           </p>`
+        : "";
 
       return `
-        <div style="border: 2px solid #d6d3d1; border-radius: 18px; padding: 18px; margin: 0 0 18px 0; background: #fffef8;">
-          <div style="font-size: 12px; color: #c2410c; font-weight: 700; margin-bottom: 8px;">
-            Harnold surfaced this
+        <div style="border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px; margin: 0 0 12px 0; background: #fffef8;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 700; color: #111827; line-height: 1.3;">
+              ${bill.title}
+            </h2>
+            <span style="font-size: 11px; color: #c2410c; font-weight: 600; white-space: nowrap; background: #fff7ed; border-radius: 99px; padding: 2px 8px;">
+              ${bill.status}
+            </span>
           </div>
 
-          <h2 style="margin: 0 0 8px 0; font-size: 22px; color: #111827;">
-            ${bill.title}
-          </h2>
-
-          <p style="margin: 0 0 10px 0; color: #475569; font-size: 15px;">
-            ${bill.summary}
+          <p style="margin: 8px 0 0 0; color: #475569; font-size: 14px; line-height: 1.5;">
+            ${whyItMatters}
           </p>
 
-          <p style="margin: 0 0 10px 0; color: #334155; font-size: 14px;">
-            <strong>Why Harnold picked this:</strong> ${rankingReason}
-          </p>
+          ${tagLine}
 
-          ${audienceLine}
-
-          <p style="margin: 12px 0 0 0; color: #111827; font-size: 14px;">
-            <strong>Why this may matter:</strong> ${whyItMatters}
-          </p>
-
-          <p style="margin: 12px 0 0 0; color: #475569; font-size: 14px;">
-            <strong>Broader pattern:</strong> ${broaderPattern}
-          </p>
-
-          <p style="margin: 14px 0 0 0;">
-            <a href="${bill.officialSourceUrl}" style="color: #0f766e; font-weight: 700;">
-              View official source
+          <p style="margin: 10px 0 0 0;">
+            <a href="${bill.officialSourceUrl}"
+               style="font-size: 13px; color: #0f766e; font-weight: 600; text-decoration: none;">
+              Read more →
             </a>
           </p>
         </div>
@@ -162,26 +142,27 @@ export function buildDigestHtml(input: {
     .join("");
 
   return `
-    <div style="font-family: Arial, sans-serif; background: #f8f4ea; padding: 24px; color: #111827;">
-      <div style="max-width: 760px; margin: 0 auto; background: white; border: 2px solid #d6d3d1; border-radius: 22px; padding: 28px;">
-        <div style="font-size: 13px; color: #c2410c; font-weight: 700; margin-bottom: 8px;">
-          HarnoldAlert digest
+    <div style="font-family: Arial, sans-serif; background: #f8f4ea; padding: 20px; color: #111827;">
+      <div style="max-width: 600px; margin: 0 auto; background: white; border: 2px solid #d6d3d1; border-radius: 18px; padding: 24px;">
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+          <span style="font-size: 24px;">🪿</span>
+          <div>
+            <div style="font-size: 11px; color: #c2410c; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+              PoliticAlert
+            </div>
+            <div style="font-size: 13px; color: #64748b;">${profileLine}</div>
+          </div>
         </div>
 
-        <h1 style="margin: 0 0 12px 0; font-size: 32px; color: #111827;">
-          Harnold’s latest legislative honks
+        <h1 style="margin: 0 0 16px 0; font-size: 24px; color: #111827; line-height: 1.2;">
+          Your legislative digest
         </h1>
-
-        ${nameLine}
-
-        <p style="margin: 0 0 24px 0; color: #64748b; font-size: 14px;">
-          Personalized using your saved interests, contexts, and audience matches.
-        </p>
 
         ${billSections}
 
-        <p style="margin: 24px 0 0 0; color: #64748b; font-size: 13px;">
-          Sent by Harnold, who remains committed to less doomscrolling and more useful honking.
+        <p style="margin: 16px 0 0 0; color: #94a3b8; font-size: 12px; text-align: center;">
+          PoliticAlert · less doomscrolling, more useful honking
         </p>
       </div>
     </div>
