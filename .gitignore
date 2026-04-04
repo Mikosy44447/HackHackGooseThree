@@ -1,0 +1,9 @@
+node_modules
+.next
+.env
+.env.local
+.env.*.local
+.wrangler
+worker/.dev.vars
+worker/.wrangler
+.DS_Store

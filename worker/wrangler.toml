@@ -1,0 +1,13 @@
+name = "harnold-ingestion-worker"
+main = "src/index.ts"
+compatibility_date = "2026-04-04"
+
+[vars]
+CONGRESS_API_BASE_URL = "https://api.congress.gov/v3"
+CONGRESS_SYNC_CONGRESS = "119"
+CONGRESS_SYNC_BILL_TYPE = "hr"
+CONGRESS_SYNC_LIMIT = "10"
+ANTHROPIC_MODEL = "claude-haiku-4-5"
+
+[triggers]
+crons = ["0 */6 * * *"]
