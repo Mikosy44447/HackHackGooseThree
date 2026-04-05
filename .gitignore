@@ -1,5 +1,2 @@
 node_modules
 .next
-.wrangler
-.DS_Store
-.vercel
