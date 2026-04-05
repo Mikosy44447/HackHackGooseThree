@@ -8,7 +8,7 @@ import ProfileSummary from "@/components/ProfileSummary";
 import SendDigestCard from "@/components/SendDigestCard";
 import DigestSettingsCard from "@/components/DigestSettingsCard";
 import HarnoldGoose from "@/components/HarnoldGoose";
-import { WavyDivider, PondRipple, HonkBubble } from "@/components/HandDrawnAssets";
+import { WavyDivider, PondRipple } from "@/components/HandDrawnAssets";
 import { UserProfile } from "@/lib/ai";
 import { getAllBills, Bill } from "@/lib/supabase/bills-store";
 import {
@@ -295,10 +295,6 @@ export default function DashboardPage() {
                       </span>
                     ))}
                   </div>
-
-                  {isHonk ? (
-                    <HonkBubble className="absolute top-2 right-2 w-20 opacity-90 rotate-6 anim-honk-pop pointer-events-none" />
-                  ) : null}
 
                   {/* Footer row */}
                   <div className="mt-4 flex items-center justify-between">

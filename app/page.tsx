@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HarnoldGoose from "@/components/HarnoldGoose";
-import { HonkBubble, WavyDivider, FeatherDoodle, SketchStar } from "@/components/HandDrawnAssets";
+import { WavyDivider, FeatherDoodle, SketchStar } from "@/components/HandDrawnAssets";
 
 export default function HomePage() {
   return (
@@ -61,8 +61,6 @@ export default function HomePage() {
               <div className="flex items-start gap-4">
                 <div className="relative shrink-0">
                   <HarnoldGoose className="h-20 w-20 anim-bob" />
-                  {/* HonkBubble stays inside the card, above the goose */}
-                  <HonkBubble className="absolute -top-12 left-0 w-28 anim-honk-pop" />
                 </div>
                 <div>
                   <p className="text-base text-slate-700 leading-relaxed italic">
